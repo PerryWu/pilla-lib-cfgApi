@@ -1,5 +1,5 @@
 {
-  "name": "pilla-lib-cfgApi",
+  "name": "pilla-lib-cfgapi",
   "author": {
     "name": "Perry Wu",
     "email": "perry.wu0606@gmail.com"
@@ -7,7 +7,7 @@
   "version": "0.0.1",
   "description": "A very simple wrapper functions to get json config file.",
   "keywords": [
-    "pilla"
+    "pillakloud"
   ],
   "homepage": "https://github.com/PerryWu/pilla-lib-cfgApi",
   "repository": {
