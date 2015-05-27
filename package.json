@@ -1,0 +1,32 @@
+{
+  "name": "pilla-lib-cfgApi",
+  "author": {
+    "name": "Perry Wu",
+    "email": "perry.wu0606@gmail.com"
+  },
+  "version": "0.0.1",
+  "description": "A very simple wrapper functions to get json config file.",
+  "keywords": [
+    "pilla"
+  ],
+  "homepage": "https://github.com/PerryWu/pilla-lib-cfgApi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PerryWu/pilla-lib-cfgApi.git"
+  },
+  "dependencies": {
+    "debug": "^2.2.0"
+  },
+  "main": "pilla-lib-cfgApi",
+  "bugs": {
+    "url": "https://github.com/PerryWu/pilla-lib-cfgApi/issues"
+  },
+  "scripts": {},
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "perrywu",
+      "email": "perry.wu0606@gmail.com"
+    }
+  ]
+}
