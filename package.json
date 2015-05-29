@@ -1,25 +1,25 @@
 {
-  "name": "pilla-lib-cfgapi",
+  "name": "pk-lib-cfgapi",
   "author": {
     "name": "Perry Wu",
     "email": "perry.wu0606@gmail.com"
   },
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A very simple wrapper functions to get json config file.",
   "keywords": [
     "pillakloud"
   ],
-  "homepage": "https://github.com/PerryWu/pilla-lib-cfgApi",
+  "homepage": "https://github.com/PerryWu/pk-lib-cfgapi",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PerryWu/pilla-lib-cfgApi.git"
+    "url": "https://github.com/PerryWu/pk-lib-cfgapi.git"
   },
   "dependencies": {
     "debug": "^2.2.0"
   },
-  "main": "pilla-lib-cfgapi",
+  "main": "pk-lib-cfgapi",
   "bugs": {
-    "url": "https://github.com/PerryWu/pilla-lib-cfgApi/issues"
+    "url": "https://github.com/PerryWu/pk-lib-cfgapi/issues"
   },
   "scripts": {},
   "license": "MIT",

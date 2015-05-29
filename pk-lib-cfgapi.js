@@ -2,7 +2,7 @@ var fs = require('fs-extra');
 var path = require('path');
 var debug = require('debug')('cfg');
 
-var pillaRoot = process.env.PILLAROOT || __dirname;
+var pkRoot = process.env.PKROOT || __dirname;
 
 function cfgApi(obj) {
 	for (var key in obj) {
@@ -35,8 +35,8 @@ function cfgApi(obj) {
 
 
 cfgApi.prototype.readCfg = function(app, name, cb) {
-	var appCfgPath = path.join(pillaRoot, 'cfgDb', app, name + '.json');
-	var appCfgBakPath = path.join(pillaRoot, 'cfgDb', app, name + '.bak.json');
+	var appCfgPath = path.join(pkRoot, 'cfgDb', app, name + '.json');
+	var appCfgBakPath = path.join(pkRoot, 'cfgDb', app, name + '.bak.json');
 
 	fs.readJson(appCfgPath, function(err, cfgObj) {
 		if (err) {
@@ -65,10 +65,10 @@ cfgApi.prototype.readCfg = function(app, name, cb) {
 
 
 cfgApi.prototype.writeCfg = function(app, name, data, cb) {
-	var appCfgPath = path.join(pillaRoot, 'cfgDb', app, name + '.json');
-	var appCfgBakPath = path.join(pillaRoot, 'cfgDb', app, name + '.bak.json');
+	var appCfgPath = path.join(pkRoot, 'cfgDb', app, name + '.json');
+	var appCfgBakPath = path.join(pkRoot, 'cfgDb', app, name + '.bak.json');
 
-	fs.mkdirsSync(path.join(pillaRoot, 'cfgDb', app));
+	fs.mkdirsSync(path.join(pkRoot, 'cfgDb', app));
 	fs.copy(appCfgPath, appCfgBakPath, function(err) {
 		if (err) {
 			debug('failed in backup cfg file? path: ' + appCfgPath + 'err: ' + err);
