@@ -4,12 +4,12 @@ var debug = require('debug')('cfg');
 
 var pkRoot = process.env.PKROOT || __dirname;
 
-function cfgApi(obj) {
-	for (var key in obj) {
-		this[key] = obj[key];
-	}
+var cfgApi = module.exports = {
+	readCfg: readCfg,
+	writeCfg: writeCfg,
+	readCfgSync: readCfgSync,
+	writeCfgSync: writeCfgSync
 };
-
 
 /*
 	File Structure
@@ -34,7 +34,7 @@ function cfgApi(obj) {
 */
 
 
-cfgApi.prototype.readCfg = function(app, name, cb) {
+function readCfg(app, name, cb) {
 	var appCfgPath = path.join(pkRoot, 'cfgDb', app, name + '.json');
 	var appCfgBakPath = path.join(pkRoot, 'cfgDb', app, name + '.bak.json');
 
@@ -47,24 +47,21 @@ cfgApi.prototype.readCfg = function(app, name, cb) {
 					// too many async codes, use sync instead...
 					fs.removeSync(appCfgPath);
 					fs.removeSync(appCfgBakPath);
-					cb({});
-					return;
+					return cb({});
 				}
 				debug('Bak file is ok, copy to original file.');
 				fs.copy(appCfgBakPath, appCfgPath, function(err) {
-					cb(cfgBakObj);
-					return;
+					return cb(cfgBakObj);
 				});
 			});
 			return;
 		}
-		cb(cfgObj);
-		return;
+		return cb(cfgObj);
 	});
 }
 
 
-cfgApi.prototype.writeCfg = function(app, name, data, cb) {
+function writeCfg(app, name, data, cb) {
 	var appCfgPath = path.join(pkRoot, 'cfgDb', app, name + '.json');
 	var appCfgBakPath = path.join(pkRoot, 'cfgDb', app, name + '.bak.json');
 
@@ -78,23 +75,81 @@ cfgApi.prototype.writeCfg = function(app, name, data, cb) {
 			if (err) {
 				console.log('failed in writing cfg to path: ' + appCfgPath + 'err: ' + err);
 			}
-			cb('');
-			return;
+			return cb('');
 		});
 	});
 
 }
 
-cfgApi.prototype.readCfgSync = function(app, name, data) {
-	// Not implemeneted
-	return;
+function readCfgSync(app, name) {
+	var appCfgPath = path.join(pkRoot, 'cfgDb', app, name + '.json');
+	var appCfgBakPath = path.join(pkRoot, 'cfgDb', app, name + '.bak.json');
+
+	var content = null;
+
+	// Read the original file.
+	try {
+		content = fs.readJsonSync(appCfgPath);
+	} catch (e) {
+		debug('Catch Error while reading', appCfgPath, e);
+		content = null;
+	}
+
+	if (!content) {
+		debug('original file is broken, read the bak file.');
+		try {
+			content = fs.readJsonSync(appCfgBakPath);
+		} catch (e) {
+			debug('Catch Error while reading', appCfgBakPath, e);
+			content = null;
+		}
+
+		if (!content) {
+			debug('Bak file is broken, rm both files.');
+			try {
+				fs.removeSync(appCfgPath);
+				fs.removeSync(appCfgBakPath);
+			} catch (e) {
+				debug('Catch Error while rming', appCfgPath, appCfgBakPath, e);
+			}
+			return {};
+		} else {
+			debug('Bak file is ok, copy to original file.');
+			try {
+				fs.copySync(appCfgBakPath, appCfgPath);
+			} catch (e) {
+				debug('Catch Erro while cp', appCfgBakPath, appCfgPath, e);
+			}
+			return content;
+		}
+	} else {
+		return content;
+	}
+
+	return content;
 }
 
+function writeCfgSync(app, name, data) {
+	var appCfgPath = path.join(pkRoot, 'cfgDb', app, name + '.json');
+	var appCfgBakPath = path.join(pkRoot, 'cfgDb', app, name + '.bak.json');
 
-cfgApi.prototype.writeCfgSync = function(app, name, data) {
-	// Not implemeneted
-	return;
+	try {
+		fs.mkdirsSync(path.join(pkRoot, 'cfgDb', app));
+	} catch (e) {
+		debug('Catch Error in makedir:', appCfgPath, e);
+	}
+
+	try {
+		fs.copySync(appCfgPath, appCfgBakPath);
+	} catch (e) {
+		debug('Catch Error in copying:', appCfgPath, appCfgBakPath, e);
+	}
+
+	try {
+		fs.writeJsonSync(appCfgPath, data);
+	} catch (e) {
+		debug('Catch Error: in writing', appCfgPath, appCfgBakPath, e);
+		return false;
+	}
+	return true;
 }
-
-
-module.exports = cfgApi;
